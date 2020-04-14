@@ -44,6 +44,7 @@ public class Solution {
             basket.add(number);
             return 0;
         }
+        basket.remove(basket.size() - 1);
         return 2;
     }
 
