@@ -1,87 +1,87 @@
 package level1.mockexam;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
+// https://programmers.co.kr/learn/courses/30/lessons/42840?language=java
+// fail
 public class Solution {
 
-    private final int[] firstMathAnswerRoutine = {1, 2, 3, 4, 5};
-    private final int[] secondMathAnswerRoutine = {2, 1, 2, 3, 2, 4, 2, 5};
-    private final int[] thirdMathAnswerRoutine = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
+    static final int[] FIRST_CHALLENGER = new int[]{1, 2, 3, 4, 5};
+    static final int[] SECOND_CHALLENGER = new int[]{2, 1, 2, 3, 2, 4, 2, 5};
+    static final int[] THIRD_CHALLENGER = new int[]{3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
+
 
     public int[] solution(int[] answers) {
-        validateExamLength(answers);
-
-        final int firstAnswerCount = loopByRoutine(firstMathAnswerRoutine, answers);
-        final int secondAnswerCount = loopByRoutine(secondMathAnswerRoutine, answers);
-        final int thirdAnswerCount = loopByRoutine(thirdMathAnswerRoutine, answers);
-        List<Integer> answerCountList = new ArrayList<>();
-
-        answerCountList.add(firstAnswerCount);
-        answerCountList.add(secondAnswerCount);
-        answerCountList.add(thirdAnswerCount);
-
-        Collections.sort(answerCountList,Collections.reverseOrder());
-
-        int maxAnswerCount = answerCountList.get(0);
-        answerCountList = answerCountList.stream().filter(integer -> maxAnswerCount == integer).collect(Collectors.toList());
-
-        final int answerCountListSize = answerCountList.size();
-        int[] answer = new int[answerCountListSize];
-        for (int i = 0; i < answerCountListSize; i++) {
-            answer[i] = answerCountList.get(i);
+        if (answers.length > 10000) {
+            throw new RuntimeException();
         }
+        int[] answer = {};
+        int[] answerCount = new int[]{0, 0, 0};
+        int fIndex = 0;
+        int sIndex = 0;
+        int tIndex = 0;
+        for (int i = 0; i < answers.length; i++) {
+            int ans = answers[i];
+            if (ans < 1 || ans > 5) {
+                throw new RuntimeException();
+            }
+            if (isOverBound(FIRST_CHALLENGER, fIndex)) {
+                fIndex = 0;
+            }
+            if (isAnswer(ans, FIRST_CHALLENGER[fIndex])) {
+                answerCount[0]++;
+            }
+
+            if (isOverBound(SECOND_CHALLENGER, sIndex)) {
+                sIndex = 0;
+            }
+            if (isAnswer(ans, SECOND_CHALLENGER[sIndex])) {
+                answerCount[1]++;
+            }
+
+            if (isOverBound(THIRD_CHALLENGER, tIndex)) {
+                tIndex = 0;
+            }
+            if (isAnswer(ans, THIRD_CHALLENGER[tIndex])) {
+                answerCount[2]++;
+            }
+            fIndex++;
+            sIndex++;
+            tIndex++;
+        }
+        int max = 0;
+        for (int i = 0; i < answerCount.length; i++) {
+            if (max < answerCount[i]) {
+                max = answerCount[i];
+            }
+        }
+        for (int i = 0; i < answerCount.length; i++) {
+            if (max == answerCount[i]) {
+                int size = answer.length;
+                int[] tempArray = answer.clone();
+                answer = new int[size + 1];
+                moveArray(tempArray, answer);
+                answer[i] = i + 1;
+            }
+        }
+
+        for (int a : answer) {
+            System.out.println(a);
+        }
+
         return answer;
     }
 
-    private int loopByRoutine(int[] answerRoutine, int[] answers) {
-        final int routineLength = answerRoutine.length;
-        int equalCount = 0;
-        final int answersLength = answers.length;
-        for (int i = 0, j = 0; i < answersLength; i++, j++) {
-            validateAnswer(answers[i]);
-//            validateAnswer(answerRoutine[i]);
-            if (j > routineLength) {
-                j -= routineLength;
-            }
-            if (isSameNumber(answers[i], answerRoutine[j])) {
-                equalCount++;
-            }
-        }
-        return equalCount;
-    }
-
-    private boolean isSameNumber(int number1, int number2) {
-        return number1 == number2;
-    }
-
-    private void validateExamLength(int[] answers) {
-        final int maxExamLength = 10000;
-        if (isIntegerLengthOver(answers, maxExamLength)) {
-            throw new RuntimeException();
+    private void moveArray(int[] smallArray, int[] bigArray) {
+        for (int i = 0; i < smallArray.length; i++) {
+            bigArray[i] = smallArray[i];
         }
     }
 
 
-    private void validateAnswer(int answer) {
-        final int minAnswer = 1;
-        final int maxAnswer = 5;
-        if (isOverNumber(minAnswer, answer)) {
-            throw new RuntimeException();
-        }
-        if (isOverNumber(answer, maxAnswer)) {
-            throw new RuntimeException();
-        }
+    private boolean isOverBound(int[] array, int index) {
+        return array.length <= index;
     }
 
-    private boolean isIntegerLengthOver(int[] answers, int length) {
-        return answers.length > length;
-    }
-
-
-    private boolean isOverNumber(int number, int compareNumber) {
-        return number > compareNumber;
+    private boolean isAnswer(int answer, int challenger) {
+        return answer == challenger;
     }
 }
