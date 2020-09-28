@@ -1,5 +1,6 @@
 package level1.hidephonenum;
 
+// https://programmers.co.kr/learn/courses/30/lessons/12948
 public class Solution {
     public String solution(String phone_number) {
         validateLength(phone_number);
