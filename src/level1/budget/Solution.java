@@ -3,7 +3,6 @@ package level1.budget;
 import java.util.Arrays;
 
 // https://programmers.co.kr/learn/courses/30/lessons/12982?language=java
-// TODO
 public class Solution {
     public int solution(int[] d, int budget) {
         validateArrayLength(d);
