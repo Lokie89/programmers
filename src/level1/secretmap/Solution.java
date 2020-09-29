@@ -1,7 +1,6 @@
 package level1.secretmap;
 
 // https://programmers.co.kr/learn/courses/30/lessons/17681?language=java
-// TODO
 public class Solution {
     public String[] solution(int n, int[] arr1, int[] arr2) {
         validateN(n);
