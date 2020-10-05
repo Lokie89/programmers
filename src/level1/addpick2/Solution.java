@@ -5,8 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 // https://programmers.co.kr/learn/courses/30/lessons/68644?language=java
-// TODO
-public class Solution {
+public  class Solution {
     public int[] solution(int[] numbers) {
         validateNumbersLength(numbers);
         for (int number : numbers) {
@@ -22,6 +21,7 @@ public class Solution {
             }
         }
         int[] answer = integers.stream().mapToInt(value -> value).toArray();
+        Arrays.sort(answer);
         return answer;
     }
 

@@ -1,5 +1,7 @@
 package level1.addpick2;
 
+import java.util.Arrays;
+
 public class Test {
     public static void main(String[] args) {
         int[] numbers1 = new int[]{
@@ -11,12 +13,7 @@ public class Test {
         int[] result1 = new Solution().solution(numbers1);
         int[] result2 = new Solution().solution(numbers2);
 
-        for (int r : result1) {
-            System.out.print(r + " ");
-        }
-        System.out.println();
-        for (int r : result2) {
-            System.out.print(r + " ");
-        }
+        System.out.println(Arrays.toString(result1));
+        System.out.println(Arrays.toString(result2));
     }
 }
