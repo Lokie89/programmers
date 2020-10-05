@@ -1,7 +1,10 @@
 package level1.mockexam;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 // https://programmers.co.kr/learn/courses/30/lessons/42840?language=java
-// fail
 public class Solution {
 
     static final int[] FIRST_CHALLENGER = new int[]{1, 2, 3, 4, 5};
@@ -10,78 +13,66 @@ public class Solution {
 
 
     public int[] solution(int[] answers) {
-        if (answers.length > 10000) {
-            throw new RuntimeException();
-        }
-        int[] answer = {};
-        int[] answerCount = new int[]{0, 0, 0};
         int fIndex = 0;
         int sIndex = 0;
         int tIndex = 0;
-        for (int i = 0; i < answers.length; i++) {
-            int ans = answers[i];
-            if (ans < 1 || ans > 5) {
-                throw new RuntimeException();
-            }
-            if (isOverBound(FIRST_CHALLENGER, fIndex)) {
+
+        int[] answerCount = new int[]{0, 0, 0};
+
+        validateAnswerLength(answers);
+        for (int ans : answers) {
+            validateAnswer(ans);
+
+            if (FIRST_CHALLENGER.length == fIndex) {
                 fIndex = 0;
             }
-            if (isAnswer(ans, FIRST_CHALLENGER[fIndex])) {
+            if (SECOND_CHALLENGER.length == sIndex) {
+                sIndex = 0;
+            }
+            if (THIRD_CHALLENGER.length == tIndex) {
+                tIndex = 0;
+            }
+            if (FIRST_CHALLENGER[fIndex] == ans) {
                 answerCount[0]++;
             }
 
-            if (isOverBound(SECOND_CHALLENGER, sIndex)) {
-                sIndex = 0;
-            }
-            if (isAnswer(ans, SECOND_CHALLENGER[sIndex])) {
+            if (SECOND_CHALLENGER[sIndex] == ans) {
                 answerCount[1]++;
             }
 
-            if (isOverBound(THIRD_CHALLENGER, tIndex)) {
-                tIndex = 0;
-            }
-            if (isAnswer(ans, THIRD_CHALLENGER[tIndex])) {
+            if (THIRD_CHALLENGER[tIndex] == ans) {
                 answerCount[2]++;
             }
             fIndex++;
             sIndex++;
             tIndex++;
         }
-        int max = 0;
+
+        int max = Arrays.stream(answerCount).max().getAsInt();
+        List<Integer> integers = new ArrayList<>();
         for (int i = 0; i < answerCount.length; i++) {
-            if (max < answerCount[i]) {
-                max = answerCount[i];
-            }
-        }
-        for (int i = 0; i < answerCount.length; i++) {
-            if (max == answerCount[i]) {
-                int size = answer.length;
-                int[] tempArray = answer.clone();
-                answer = new int[size + 1];
-                moveArray(tempArray, answer);
-                answer[i] = i + 1;
+            if (answerCount[i] == max) {
+                integers.add(i + 1);
             }
         }
 
-        for (int a : answer) {
-            System.out.println(a);
+        //가장 높은 점수를 받은 사람이 여럿일 경우, return하는 값을 오름차순 정렬해주세요.
+        integers.sort(Integer::compareTo);
+        return integers.stream().mapToInt(value -> value).toArray();
+    }
+
+    // 시험은 최대 10,000 문제로 구성되어있습니다.
+    private void validateAnswerLength(int[] answers) {
+        if (answers.length > 10000) {
+            throw new RuntimeException();
         }
-
-        return answer;
     }
 
-    private void moveArray(int[] smallArray, int[] bigArray) {
-        for (int i = 0; i < smallArray.length; i++) {
-            bigArray[i] = smallArray[i];
+    //문제의 정답은 1, 2, 3, 4, 5중 하나입니다.
+    private void validateAnswer(int answer) {
+        if (answer < 1 || answer > 5) {
+            throw new RuntimeException();
         }
     }
 
-
-    private boolean isOverBound(int[] array, int index) {
-        return array.length <= index;
-    }
-
-    private boolean isAnswer(int answer, int challenger) {
-        return answer == challenger;
-    }
 }
