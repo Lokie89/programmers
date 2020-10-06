@@ -1,59 +1,78 @@
 package level1.findprimenumber;
 
-// https://programmers.co.kr/learn/courses/30/lessons/12921?language=java
-
 // 참고
 // https://ko.wikipedia.org/wiki/%EC%97%90%EB%9D%BC%ED%86%A0%EC%8A%A4%ED%85%8C%EB%84%A4%EC%8A%A4%EC%9D%98_%EC%B2%B4
 
 import java.util.ArrayList;
+import java.util.List;
 
+// https://programmers.co.kr/learn/courses/30/lessons/12921?language=java
+// TODO
 public class Solution {
-
     public int solution(int n) {
-        validateNumber(n);
-//        allNumbers.add(2);
-//        for (int i = 3; i <= n; i+=2) {
-//            allNumbers.add(i);
-//        }
-//        for (int i = 0; i < allNumbers.size(); i++) {
-//            int num = allNumbers.get(i);
-//            for (int j = i + 1; j < allNumbers.size(); j++) {
-//                if (allNumbers.get(j) % num == 0) {
-//                    allNumbers.remove(j);
-//                    j--;
-//                }
-//            }
-//        }
-//        return allNumbers.size();
-        // ArrayList로 구현
-        ArrayList<Boolean> primeList;
-        int count = 0;
+        validateN(n);
 
-        // n+1만큼 할당
-        primeList = new ArrayList<Boolean>(n + 1);
-        // 0번째와 1번째를 소수 아님으로 처리
-        primeList.add(false);
-        primeList.add(false);
-        // 2~ n 까지 소수로 설정
-        for (int i = 2; i <= n; i++)
-            primeList.add(i, true);
+        int sqrt = (int) Math.sqrt(n);
 
-        // 2 부터  ~ i*i <= n
-        // 각각의 배수들을 지워간다.
-        for (int i = 2; (i * i) <= n; i++) {
-            if (primeList.get(i)) {
-                for (int j = i * i; j <= n; j += i) primeList.set(j, false);
-                //i*i 미만은 이미 처리되었으므로 j의 시작값은 i*i로 최적화할 수 있다.
+        List<Boolean> total = new ArrayList<>();
+        total.add(false);
+        total.add(false);
+        for (int i = 2; i <= n; i++) {
+            total.add(true);
+        }
+
+        for (int i = 2; i <= sqrt; i++) {
+            if (isPrimeNumber(i)) {
+                for (int j = i + 1; j <= n; j++) {
+                    if (j % i == 0) {
+                        total.set(j, false);
+                    }
+                }
             }
         }
-        return (int) primeList.stream().filter(aBoolean -> aBoolean == Boolean.TRUE).count();
+
+        int answer = (int) total.stream().filter(Boolean::booleanValue).count();
+        return answer;
     }
 
+//    public int solution(int n) {
+//        validateN(n);
+//        int sqrt = (int) Math.sqrt(n);
+//
+//        List<Integer> primes = new ArrayList<>();
+//        for (int i = 2; i <= sqrt; i++) {
+//            if (isPrimeNumber(i)) {
+//                primes.add(i);
+//            }
+//        }
+//        List<Integer> total = new ArrayList<>();
+//        for (int i = 2; i <= n; i++) {
+//            total.add(i);
+//        }
+//
+//        return (int) total.stream()
+//                .filter(t ->
+//                        primes.stream()
+//                                .filter(p -> t != p && t % p == 0)
+//                                .count() == 0
+//                )
+//                .count();
+//    }
+
+    boolean isPrimeNumber(int n) {
+        for (int i = 3; i < n; i += 2) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
     // n은 2이상 1000000이하의 자연수입니다.
-    private void validateNumber(int n) {
+    private void validateN(int n) {
         if (n < 2 || n > 1000000) {
             throw new RuntimeException();
         }
     }
 }
-

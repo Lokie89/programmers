@@ -11,5 +11,11 @@ public class Test {
         System.out.println(new Solution().solution(8));
         System.out.println(new Solution().solution(9));
         System.out.println(new Solution().solution(10));
+        System.out.println(new Solution().solution(11));
+        System.out.println(new Solution().solution(12));
+        System.out.println(new Solution().solution(13));
+        System.out.println(new Solution().solution(14));
+        System.out.println(new Solution().solution(15));
+        System.out.println(new Solution().solution(16));
     }
 }
