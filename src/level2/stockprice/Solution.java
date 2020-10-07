@@ -1,7 +1,6 @@
 package level2.stockprice;
 
 // https://programmers.co.kr/learn/courses/30/lessons/42584?language=java
-// TODO
 public class Solution {
     public int[] solution(int[] prices) {
         validatePriceLength(prices);
