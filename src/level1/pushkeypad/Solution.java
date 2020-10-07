@@ -1,7 +1,6 @@
 package level1.pushkeypad;
 
 // https://programmers.co.kr/learn/courses/30/lessons/67256?language=java
-// TODO
 public class Solution {
 
     public String solution(int[] numbers, String hand) {
