@@ -1,7 +1,7 @@
 package level2.finesquare;
 
 // https://programmers.co.kr/learn/courses/30/lessons/62048?language=java
-// 찢어진 사각형 개수는 w + h - gcd(w, h)
+// TODO : 찢어진 사각형 개수는 w + h - gcd(w, h) ?? 공부
 public class Solution {
     public long solution(int w, int h) {
         validateWH(w);
